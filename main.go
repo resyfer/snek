@@ -30,12 +30,12 @@ func main() {
 		os.Exit(1)
 	}
 	pty.width = width
-	pty.height = height
+	pty.height = height - 1 // For score
 
 	// Initializing Snek
 	snek.locationUpdate(width/2, height/2)
 	snek.lengthUpdate(1)
-	snek.durationUpdate(800 * milli)
+	snek.durationUpdate(500 * milli)
 	snek.symbol = SNAKE_RIGHT
 	snek.dir = RIGHT
 

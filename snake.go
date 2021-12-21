@@ -38,3 +38,7 @@ func (s *snake) lengthUpdate(length int) {
 func (s *snake) durationUpdate(duration time.Duration) {
 	s.dur = duration
 }
+
+func (s snake) foodCollision() bool {
+	return s.x == dinner.x && s.y == dinner.y
+}
