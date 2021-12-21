@@ -55,6 +55,10 @@ func (s snake) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		snek.x += snek.dir.right
 		snek.y += snek.dir.down
 
+		if snek.boundaryCollision() {
+			return s, tea.Quit
+		}
+
 		if snek.foodCollision() {
 			dinner.init()
 			snek.points++

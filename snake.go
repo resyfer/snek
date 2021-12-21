@@ -42,3 +42,9 @@ func (s *snake) durationUpdate(duration time.Duration) {
 func (s snake) foodCollision() bool {
 	return s.x == dinner.x && s.y == dinner.y
 }
+
+func (s snake) boundaryCollision() bool {
+
+	return s.y == 0 || s.y == pty.height - 1 || s.x == 0 || s.x == pty.width - 1
+
+}
