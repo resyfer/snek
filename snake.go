@@ -2,15 +2,28 @@ package main
 
 import "time"
 
-type snake struct {
+// Movemnent Direction
+type direction struct {
+	down  int
+	right int
+}
 
-	x int
-	y int
+var UP = direction{down: -1, right: 0}
+var DOWN = direction{down: 1, right: 0}
+var LEFT = direction{down: 0, right: -1}
+var RIGHT = direction{down: 0, right: 1}
+
+// Snake Struct
+type snake struct {
+	x      int // Keep in mind that 0 and n-1 (limits of terminal) have a border on them
+	y      int // Keep in mind that 0 and n-1 (limits of terminal) have a border on them
 	length int
 	points int
 
-	duration time.Duration
+	dur time.Duration
+	dir direction
 
+	symbol string
 }
 
 func (s *snake) locationUpdate(x, y int) {
@@ -23,5 +36,5 @@ func (s *snake) lengthUpdate(length int) {
 }
 
 func (s *snake) durationUpdate(duration time.Duration) {
-	s.duration = duration
+	s.dur = duration
 }
