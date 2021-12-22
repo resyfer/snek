@@ -46,9 +46,7 @@ func (s snake) foodCollision() bool {
 }
 
 func (s snake) boundaryCollision() bool {
-
-	return s.y == 0 || s.y == pty.height - 1 || s.x == 0 || s.x == pty.width - 1
-
+	return s.y == 0 || s.y == len(area) - 1 || s.x == 0 || s.x == len(area[0]) - 1
 }
 
 // Snake's Body's Queue
