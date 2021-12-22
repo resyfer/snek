@@ -24,6 +24,8 @@ type snake struct {
 	dir direction
 
 	symbol string
+
+	body [][]int
 }
 
 func (s *snake) locationUpdate(x, y int) {
@@ -47,4 +49,24 @@ func (s snake) boundaryCollision() bool {
 
 	return s.y == 0 || s.y == pty.height - 1 || s.x == 0 || s.x == pty.width - 1
 
+}
+
+// Snake's Body's Queue
+func (s *snake) bodyPush(x, y int) {
+	s.body = append(s.body, []int{x, y})
+}
+
+func (s *snake) bodyPushFront(x, y int) {
+	s.body = append([][]int{{x, y}}, s.body[:]...)
+}
+func (s *snake) bodyPop() {
+	s.body = s.body[1:]
+}
+
+func (s *snake) lenInr() {
+	s.length++
+}
+
+func (s *snake) pointsInr() {
+	s.points++
 }

@@ -35,7 +35,7 @@ func main() {
 	// Initializing Snek
 	snek.locationUpdate(width/2, height/2)
 	snek.lengthUpdate(1)
-	snek.durationUpdate(500 * milli)
+	snek.durationUpdate(400 * milli)
 	snek.symbol = SNAKE_RIGHT
 	snek.dir = RIGHT
 
