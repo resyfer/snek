@@ -1,11 +1,15 @@
 package main
 
-const BORDER string = "X"
-const FOOD string = "◉"
+const (
+	EMPTY string = " "
 
-const SNAKE_UP string = "▲"
-const SNAKE_DOWN string = "▼"
-const SNAKE_LEFT string = "◀"
-const SNAKE_RIGHT string = "▶"
+	BORDER string = "X"
+	FOOD string = "◉"
 
-const SNAKE_BODY string = "█"
+	SNAKE_UP string = "^"
+	SNAKE_DOWN string = "V"
+	SNAKE_LEFT string = "<"
+	SNAKE_RIGHT string = ">"
+
+	SNAKE_BODY string = "█"
+)

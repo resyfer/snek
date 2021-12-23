@@ -9,5 +9,6 @@ func (f *food) init() {
 
 	f.x = random.Intn(WIDTH)
 	f.y = random.Intn(HEIGHT)
+	area[f.y][f.x] = 2
 
 }

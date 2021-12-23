@@ -13,7 +13,7 @@ import (
 var milli = time.Millisecond
 var random *rand.Rand
 
-var area [][]uint8
+var area [][]uint8 // 0 -> Empty, 1 -> Snake Head, 2 -> Food, 3 -> Snake Body. Higher priority gets shown, except 0, which has least priority.
 var snek snake
 var dinner food
 
@@ -42,7 +42,7 @@ func main() {
 	}
 
 	// Initializing Snek
-	snek.locationUpdate(len(area)/2, len(area[0])/2)
+	snek.locationUpdate(WIDTH/2, HEIGHT/2)
 	snek.lengthUpdate(1)
 	snek.durationUpdate(400 * milli)
 	snek.symbol = SNAKE_UP

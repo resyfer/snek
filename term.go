@@ -48,6 +48,22 @@ func (s snake) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case time.Time:
 
+		if snek.boundaryCollision() {
+			return s, tea.Quit
+		}
+
+		if snek.foodCollision() {
+			snek.pointsInr()
+			snek.lenInr()
+			snek.bodyPush(snek.x, snek.y)
+			snek.move()
+			dinner.init()
+		}
+
+		snek.bodyPush(snek.x, snek.y)
+		snek.move()
+		snek.bodyPop()
+
 
 		return s, tick()
 	}
@@ -60,7 +76,7 @@ func (s snake) View() string {
 
 	display := ""
 
-	display += fmt.Sprintf("Points Scored : %v\n", snek.body)
+	display += fmt.Sprintf("Points Scored : %v\n", snek.points)
 
 
 	// Print Horizontal TOP Border
@@ -77,8 +93,36 @@ func (s snake) View() string {
 		display += BORDER
 
 		// Print Play Area
-		for i := 0; i < WIDTH; i++ {
-			display += " "
+		for j := 0; j < WIDTH; j++ {
+
+			switch area[i][j] {
+			case 0:
+				display += EMPTY
+
+			case 3:
+				display += SNAKE_BODY
+
+			case 2:
+				display += FOOD
+
+			case 1:
+				switch snek.dir {
+
+				case UP:
+					display += SNAKE_UP
+
+				case DOWN:
+					display += SNAKE_DOWN
+
+				case LEFT:
+					display += SNAKE_LEFT
+
+				case RIGHT:
+					display += SNAKE_RIGHT
+				}
+
+			}
+
 		}
 
 		// Print Vertical RIGHT Border

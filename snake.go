@@ -28,9 +28,15 @@ type snake struct {
 	body [][]int
 }
 
+func (s *snake) move() {
+	s.locationUpdate(s.x + s.dir.right, s.y + s.dir.down)
+}
+
 func (s *snake) locationUpdate(x, y int) {
+	area[y][x] = 0
 	s.x = x
 	s.y = y
+	area[y][x] = 1
 }
 
 func (s *snake) lengthUpdate(length int) {
@@ -46,19 +52,25 @@ func (s snake) foodCollision() bool {
 }
 
 func (s snake) boundaryCollision() bool {
-	return s.y == 0 || s.y == len(area) - 1 || s.x == 0 || s.x == len(area[0]) - 1
+	return s.y + s.dir.down == -1 || s.y + s.dir.down == HEIGHT || s.x + s.dir.right == -1 || s.x + s.dir.right == WIDTH
 }
 
 // Snake's Body's Queue
 func (s *snake) bodyPush(x, y int) {
+	area[y][x] = 3
 	s.body = append(s.body, []int{x, y})
 }
 
 func (s *snake) bodyPushFront(x, y int) {
+	area[y][x] = 1
 	s.body = append([][]int{{x, y}}, s.body[:]...)
 }
+
 func (s *snake) bodyPop() {
+	
+	area[s.body[0][1]][s.body[0][0]] = 0
 	s.body = s.body[1:]
+
 }
 
 func (s *snake) lenInr() {
