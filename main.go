@@ -13,9 +13,12 @@ import (
 var milli = time.Millisecond
 var random *rand.Rand
 
+var area [][]uint8 // 0 -> Empty, 1 -> Snake Head, 2 -> Food, 3 -> Snake Body. Higher priority gets shown, except 0, which has least priority.
 var snek snake
-var pty terminal
 var dinner food
+
+var HEIGHT int
+var WIDTH int
 
 func main() {
 
@@ -29,18 +32,25 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	pty.width = width
-	pty.height = height - 1 // For score
+
+	// Initialize play area
+	HEIGHT = height - 3 // 2 for borders + 1 for Score
+	WIDTH = width - 2   // 2 for borders
+	area = make([][]uint8, HEIGHT)
+	for i := 0; i < HEIGHT; i++ {
+		area[i] = make([]uint8, WIDTH)
+	}
 
 	// Initializing Snek
-	snek.locationUpdate(width/2, height/2)
+	snek.locationUpdate(WIDTH/2, HEIGHT/2)
 	snek.lengthUpdate(1)
 	snek.durationUpdate(400 * milli)
-	snek.symbol = SNAKE_RIGHT
-	snek.dir = RIGHT
+	snek.symbol = SNAKE_UP
+	snek.dir = UP
 
-	dinner.init()
+	dinner.init() //Initialize food
 
+	// Start interactive TUI
 	if err := tea.NewProgram(snek).Start(); err != nil {
 		fmt.Println("Oops, looks like there was an error", err)
 		os.Exit(1)

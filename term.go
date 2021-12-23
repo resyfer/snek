@@ -7,11 +7,6 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-type terminal struct {
-	width  int
-	height int
-}
-
 func tick() tea.Cmd {
 
 	return tea.Tick(snek.dur, func(t time.Time) tea.Msg {
@@ -53,29 +48,25 @@ func (s snake) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case time.Time:
 
-		snek.x += snek.dir.right
-		snek.y += snek.dir.down
-
 		if snek.boundaryCollision() {
 			return s, tea.Quit
 		}
 
 		if snek.foodCollision() {
-			dinner.init()
-			snek.points++
-
+			snek.pointsInr()
 			snek.lenInr()
-			snek.bodyPushFront(snek.x, snek.y)	
-			snek.x += snek.dir.right
-			snek.y += snek.dir.down
-			
-			if snek.dur > 100 * time.Millisecond {
-				snek.dur -= 50 * time.Millisecond
-			}
-		} else {
 			snek.bodyPush(snek.x, snek.y)
-			snek.bodyPop()
+			snek.move()
+			dinner.init()
+
+			if snek.dur >= 100*milli {
+				snek.durationUpdate(snek.dur - 50*milli)
+			}
 		}
+
+		snek.bodyPush(snek.x, snek.y)
+		snek.move()
+		snek.bodyPop()
 
 		return s, tick()
 	}
@@ -88,69 +79,65 @@ func (s snake) View() string {
 
 	display := ""
 
-	display += fmt.Sprintf("Points Scored : %v\n", snek.body)
+	display += fmt.Sprintf("Points Scored : %v\n", snek.points)
 
-	for i := 0; i < pty.height; i++ {
+	// Print Horizontal TOP Border
+	display += BORDER
+	for i := 0; i < WIDTH; i++ {
+		display += BORDER
+	}
+	display += BORDER
+	display += "\n"
 
-		if i == 0 {
+	for i := 0; i < HEIGHT; i++ {
 
-			// Print Horizontal TOP Border
-			for j := 0; j < pty.width; j++ {
-				display += BORDER
-			}
-			display += "\n"
+		// Print Vertical LEFT Border
+		display += BORDER
 
-		} else if i == pty.height-1 {
+		// Print Play Area
+		for j := 0; j < WIDTH; j++ {
 
-			// Print Horizontal BOTTOM Border
-			for j := 0; j < pty.width; j++ {
-				display += BORDER
-			}
+			switch area[i][j] {
+			case 0:
+				display += EMPTY
 
-		} else {
+			case 3:
+				display += SNAKE_BODY
 
-			// Print Vertical LEFT Border
-			display += BORDER
+			case 2:
+				display += FOOD
 
-			// Print Play Area
-			for j := 0; j < pty.width-2; j++ {
+			case 1:
+				switch snek.dir {
 
-				if i == snek.y && j == snek.x {
-					display += snek.symbol
-				} else if i == dinner.y && j == dinner.x {
-					display += FOOD
-				} else {
+				case UP:
+					display += SNAKE_UP
 
-					body := false
+				case DOWN:
+					display += SNAKE_DOWN
 
-					for k:=0; k<len(snek.body); k++ {
-						if i == snek.body[k][1] && j == snek.body[k][0] {
-							display += SNAKE_BODY
-							body = true
-						}
-					}
+				case LEFT:
+					display += SNAKE_LEFT
 
-					if !body {
-						display += " "
-					}
+				case RIGHT:
+					display += SNAKE_RIGHT
 				}
-			}
 
-			// Print Vertical RIGHT Border
-			display += BORDER
-			display += "\n"
+			}
 
 		}
 
+		// Print Vertical RIGHT Border
+		display += BORDER
+		display += "\n"
 	}
 
-	// for i:=0; i<len(snek.body) - 1; i++ {
-	// 	n := snek.body[i][0] + (pty.width - 1) * snek.body[i][1] + pty.height
-		
-	// 	if display[n] != FOOD[0] {
-	// 		display = display[:n] + SNAKE_BODY + display[n+1:]
-	// 	}
-	// }
+	// Print Horizontal BOTTOM Border
+	display += BORDER
+	for i := 0; i < WIDTH; i++ {
+		display += BORDER
+	}
+	display += BORDER
 
 	return display
 }
