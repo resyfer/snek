@@ -60,7 +60,7 @@ func (s snake) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			dinner.init()
 
 			if snek.dur >= 100*milli {
-				snek.durationUpdate(snek.dur - 50*milli)
+				snek.durationUpdate(snek.dur - 25*milli)
 			}
 		}
 
