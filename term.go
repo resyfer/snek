@@ -59,15 +59,14 @@ func (s snake) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			snek.move()
 			dinner.init()
 
-			if snek.dur >= 100 * milli {
-				snek.durationUpdate(snek.dur - 50 * milli)
+			if snek.dur >= 100*milli {
+				snek.durationUpdate(snek.dur - 50*milli)
 			}
 		}
 
 		snek.bodyPush(snek.x, snek.y)
 		snek.move()
 		snek.bodyPop()
-
 
 		return s, tick()
 	}
@@ -81,7 +80,6 @@ func (s snake) View() string {
 	display := ""
 
 	display += fmt.Sprintf("Points Scored : %v\n", snek.points)
-
 
 	// Print Horizontal TOP Border
 	display += BORDER

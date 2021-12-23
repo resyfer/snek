@@ -35,9 +35,9 @@ func main() {
 
 	// Initialize play area
 	HEIGHT = height - 3 // 2 for borders + 1 for Score
-	WIDTH = width - 2 // 2 for borders
-	area = make([][]uint8, HEIGHT) 
-	for i:=0; i<HEIGHT; i++ {
+	WIDTH = width - 2   // 2 for borders
+	area = make([][]uint8, HEIGHT)
+	for i := 0; i < HEIGHT; i++ {
 		area[i] = make([]uint8, WIDTH)
 	}
 
